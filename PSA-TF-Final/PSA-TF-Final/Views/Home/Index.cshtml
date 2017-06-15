@@ -1,31 +1,152 @@
-﻿@{
-    ViewBag.Title = "Home Page";
+﻿@model PSA_TF_Final.Models.DAOTicket
+
+@{
+    ViewBag.Title = "Trabalho de PSA";
 }
 
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+<div class="container">
+    <div class="row"><h1>Aplicação Web</h1></div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
+            @Html.ActionLink("Consultar Ticket", "ShowPriceFields", new { id = "" }, new { @class = "btn btn-lg btn-success" })
+
+            @if (ViewBag.ShowPriceFields == true)
+            {
+                using (Html.BeginForm("ConsultPrice", "Home"))
+                {
+                    <h2 class="text-center">Ticket</h2>
+                    <dl class="dl-horizontal">
+                        <dt>@Html.LabelFor(model => model.Codigo)</dt>
+                        <dd>
+                            @Html.TextBoxFor(model => model.Codigo)
+                        </dd>
+                    </dl>
+                    <input value="Consultar" type="submit" class="btn btn-success" />
+                    <p>@ViewBag.Error</p>
+                }
+            }
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
+            @if (ViewBag.ConsultPrice == true)
+            {
+                <h2 class="text-center">Ticket</h2>
+                <dl class="dl-horizontal">
+                    <dt>@Html.DisplayNameFor(model => model.Codigo)</dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Codigo)
+                    </dd>
+                    <dt>@Html.DisplayNameFor(model => model.Entrada)</dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Entrada)
+                    </dd>
+                    <dt>Valor a ser pago: </dt>
+                    <dd class="">
+                        @Html.DisplayFor(model => model.Valor)
+                    </dd>
+                </dl>
+            }
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
+            <p>Vagas disponíveis: @ViewBag.Vagas</p>
+        </div>
+    </div>
 </div>
 
-<div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
+
+<div class="container">
+    <div class="row"><h1>Cancela de Entrada</h1></div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+            @Html.ActionLink("Gerar Ticket", "GenerateTicket", new { id = "" }, new { @class = "btn btn-lg btn-success" })
+        </div>
+
     </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
+    <div class="row">
+        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+
+            @if (ViewBag.TicketReady != null && ViewBag.TicketReady == true)
+            {
+                <h2 class="text-center">Ticket</h2>
+                <dl class="dl-horizontal">
+                    <dt>@Html.DisplayNameFor(model => model.Codigo)</dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Codigo)
+                    </dd>
+                    <dt>@Html.DisplayNameFor(model => model.Entrada)</dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Entrada)
+                    </dd>
+                </dl>
+            }
+        </div>
     </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
+</div>
+
+
+<div class="container">
+    <div class="row"><h1>Cancela de Saída</h1></div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
+            @Html.ActionLink("Liberar Saída", "ShowFields", new { id = "" }, new { @class = "btn btn-lg btn-success" })
+        </div>
+
+        <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
+            @Html.ActionLink("Liberar Cancela", "ReleaseGate", new { id = "" }, new { @class = "btn btn-lg btn-success" })
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
+            @if (ViewBag.Fields == true)
+            {
+                using (Html.BeginForm("Leave", "Home"))
+                {
+                    <h2 class="text-center">Ticket</h2>
+                    <dl class="dl-horizontal">
+                        <dt>@Html.LabelFor(model => model.Codigo)</dt>
+                        <dd>
+                            @Html.TextBoxFor(model => model.Codigo)
+                        </dd>
+                    </dl>
+                    <input type="submit" class="btn btn-success" />
+                }
+
+                if (ViewBag.Result == "Pago")
+                {
+                    <label>Passagem liberada!</label>
+                }
+                else if (ViewBag.Result == "Não pago")
+                {
+                    <label>Ticket ainda não foi pago, por favor dirija-se ao guichê mais proximo.</label>
+                }
+                else
+                {
+                    <label>Insira o código do ticket, por favor.</label>
+                }
+
+            }
+        </div>
+        <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
+            @if (ViewBag.ReleaseGate == true)
+            {
+                using (Html.BeginForm("Release", "Home"))
+                {
+                    <h2 class="text-center">Ticket</h2>
+                    <h4>Selecione o motivo da liberação</h4>
+                    <ul class="">
+                        <li>@Html.RadioButton("reason", "Emergência") Emergência: </li>
+                        <li>@Html.RadioButton("reason", "Evento Especial") Evento Especial</li>
+                        <li>@Html.RadioButton("reason", "Outros") Outros</li>
+                    </ul>
+                    <input value="Liberar" type="submit" class="btn btn-success" />
+                    <h4>@ViewBag.statusCancela</h4>
+                }
+            }
+        </div>
     </div>
 </div>

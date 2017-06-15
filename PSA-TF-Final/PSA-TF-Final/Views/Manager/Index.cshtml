@@ -1,0 +1,108 @@
+﻿@model PSA_TF_Final.Models.DAOTicket
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Manager</h2>
+
+<div class="container">
+    <div class="row"></div>
+    <div class="row">
+
+        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+            @Html.ActionLink("Pagar Ticket", "PayTicketFields", new { id = "" }, new { @class = "btn btn-lg btn-success" })
+        </div>
+
+        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+            @Html.ActionLink("Liberar Ticket", "ShowReleaseTicketFields", new { id = "" }, new { @class = "btn btn-lg btn-success" })
+        </div>
+
+        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+            @Html.ActionLink("Gerar Ticket", "GenerateTicket", new { id = "" }, new { @class = "btn btn-lg btn-success" })
+        </div>
+
+        @if (ViewBag.Role == "Gerente")
+        {
+            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                @Html.ActionLink("Mostrar Relatórios", "Reports", new { id = "" }, new { @class = "btn btn-lg btn-success" })
+            </div>
+        }
+    </div>
+    <div class="row">
+        @if (ViewBag.Funcao == "Pagar Ticket")
+        {
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                @using (Html.BeginForm("PayTicket", "Manager"))
+                {
+                    <h2 class="text-center">Ticket</h2>
+                    <dl class="dl-horizontal">
+                        <dt>@Html.LabelFor(model => model.Codigo)</dt>
+                        <dd>
+                            @Html.TextBoxFor(model => model.Codigo)
+                        </dd>
+                    </dl>
+                    <input value="Pagar" type="submit" class="btn btn-success" />
+                    <label>@ViewBag.Error</label>
+                }
+
+                @if (ViewBag.ShowPrice != null && ViewBag.ShowPrice == true)
+                {
+                    <dl class="dl-horizontal">
+                        <dt>@Html.LabelFor(model => model.Codigo)</dt>
+                        <dd>
+                            @Html.ValueFor(model => model.Codigo)
+                        </dd>
+                        <dt>@Html.LabelFor(model => model.Entrada)</dt>
+                        <dd>
+                            @Html.ValueFor(model => model.Entrada)
+                        </dd>
+                        <dt>@Html.LabelFor(model => model.Valor)</dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Valor)
+                        </dd>
+                    </dl>
+
+                    <p class="text-info"><b>@ViewBag.Status</b></p>
+                }
+
+            </div>
+        }
+
+        else if (ViewBag.Funcao == "Liberar Ticket")
+        {
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+
+                @using (Html.BeginForm("ReleaseTicket", "Manager"))
+                {
+                    <h2 class="text-center">Ticket</h2>
+                    <h4>Insira o código do ticket e selecione o motivo da liberação</h4>
+                    <p>Código: </p> @Html.TextBox("codigo", null)
+                    <ul class="">
+                        <li>@Html.RadioButton("reason", "Emergência") Emergência: </li>
+                        <li>@Html.RadioButton("reason", "Evento Especial") Evento Especial</li>
+                        <li>@Html.RadioButton("reason", "Outros") Outros</li>
+                    </ul>
+                    <input value="Liberar" type="submit" class="btn btn-success" />
+                    <h4>@ViewBag.Ticket</h4>
+                    <p class="text-info"><b>@ViewBag.Status</b></p>
+                }
+
+            </div>
+        }
+
+        else if (ViewBag.Funcao == "Gerar Ticket")
+        {
+            <h2 class="text-center">Ticket</h2>
+            <dl class="dl-horizontal">
+                <dt>@Html.DisplayNameFor(model => model.Codigo)</dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Codigo)
+                </dd>
+                <dt>@Html.DisplayNameFor(model => model.Entrada)</dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Entrada)
+                </dd>
+            </dl>
+        }
+    </div>
+</div>
